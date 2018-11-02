@@ -7,9 +7,9 @@ import exclamation from "../assets/exclamation.png"
 export default class GalaxySNote7 extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      panicked: false,
-    }
+      this.state = {
+        panicked: false
+      }
 
     this.squeelAudio = new Audio(wreee);
     this.exclaimAudio = new Audio(exclaim);
@@ -22,20 +22,47 @@ export default class GalaxySNote7 extends React.Component {
   }
 
   relax = () => {
+    // console.log('hit relax')
+    // if (this.props.environment === 'inhospitable') {
+    //   setTimeout(() => {
+    //     this.setState({
+    //       environment: 'docile'
+    //     })
+    //   }, 2000
+    //   )
+    // }
   }
 
+
   exclaim = () => {
-    if (this.state.panicked) return
+    console.log('hit the exclaim')
     this.exclaimAudio.play()
     this.squeelAudio.play()
   }
 
-  panic = () => (<img id="galaxy-exclamation" className="exclamation" src={exclamation} alt="" />)
+  setPanick = () => {
+    if(this.state.panicked === false){
+      this.setState({
+        panicked: true
+      })
+    } else {
+      return null
+    }
+    this.props.relax
+  }
+
+
+  panic = () => {
+    this.exclaim()
+    return <img id="galaxy-exclamation" className="exclamation" src={exclamation} alt="" />
+  }
 
   render() {
     return(
-      <div id="galaxy-s-note" onClick={this.exclaim}>
-        {(this.state.panicked) ? this.panic() : null}
+      <div id="galaxy-s-note" onClick={() => this.props.setEnvironment('inhospitable')}>
+        {this.props.environment === 'inhospitable'? this.setPanick() : null}
+        {this.state.panicked? this.panic() : null}
+        // {this.relax()}
       </div>
     )
   }
